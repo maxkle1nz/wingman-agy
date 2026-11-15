@@ -101,11 +101,13 @@ anyone who wants Gemini's image and voice models in shell scripts.
 ## Install
 
 ```sh
-git clone https://github.com/maxkle1nz/wingman-agy && cd wingman-agy
-./install.sh            # links `agy` into ~/.local/bin
+brew install maxkle1nz/tap/agy
 agy setup --apply       # run this yourself, in a terminal
 agy doctor
 ```
+
+Or from a clone: `git clone https://github.com/maxkle1nz/wingman-agy && cd wingman-agy && ./install.sh`
+links `agy` into `~/.local/bin`.
 
 You need macOS with Antigravity installed and signed in, and Python 3.9 or newer. A Gemini
 API key is optional; `setup` can find one or help you create it.
