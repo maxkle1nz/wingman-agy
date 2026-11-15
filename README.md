@@ -18,10 +18,10 @@
 
 # Wingman AGY
 
-`agy` lets the agent in your terminal hand work to Gemini. You might use Claude Code, Codex,
-or something else with a shell. If you also have Google's Antigravity app and a Google AI
-plan, your agent can start Gemini agents there, follow them and read their results. All of it
-happens without leaving the CLI.
+`agy` is a command-line bridge to Google Antigravity. From a terminal, you or the agent you
+work with (Claude Code, Codex, anything with a shell) can start Antigravity agents on your
+Google plan, send them follow-ups and read what they produced. The same CLI calls the Gemini
+API directly for one-shot answers, images, speech and embeddings.
 
 ```sh
 agy new --yes --model gemini-4-hydrogen-high "Read ~/src/shop and list every place we parse dates"
