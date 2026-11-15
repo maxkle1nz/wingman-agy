@@ -93,7 +93,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 AGY_HOME = Path(os.environ.get("AGY_BRIDGE_HOME") or (Path.home() / ".gemini" / "antigravity")).expanduser()
 _INIT_AGY_HOME = AGY_HOME
@@ -3322,6 +3322,10 @@ def _doctor_summary(checks: list) -> dict:
 
 def _agy_git_rev() -> str:
     script_path = Path(__file__).resolve()
+    # Only trust git when agy sits at the root of its own checkout: a Homebrew install lives
+    # inside /opt/homebrew, which is itself a git repo with an unrelated HEAD.
+    if not (script_path.parent / ".git").exists():
+        return f"v{__version__}"
     try:
         r = _run(["git", "-C", str(script_path.parent), "rev-parse", "--short", "HEAD"], timeout=3)
         if r.returncode == 0 and r.stdout.strip():
