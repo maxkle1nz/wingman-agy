@@ -328,6 +328,14 @@ class OfflineBase(unittest.TestCase):
         self.daemon = agy.Daemon(pid=1, port=2, token="synthetic-test-token", version="t")
         self.stack.enter_context(patch.object(agy, "discover", return_value=self.daemon))
         self.temp = Path(self.stack.enter_context(tempfile.TemporaryDirectory()))
+        # Hermetic app binaries: doctor must not depend on whether this host has Antigravity.
+        fake_bin = self.temp / "app_bin"
+        fake_bin.mkdir()
+        for name in ("language_server", "agentapi"):
+            (fake_bin / name).write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+            (fake_bin / name).chmod(0o755)
+        self.stack.enter_context(patch.object(agy, "APP_LANGUAGE_SERVER", fake_bin / "language_server"))
+        self.stack.enter_context(patch.object(agy, "AGENTAPI", fake_bin / "agentapi"))
         self.ledger = self.temp / "ledger.jsonl"
         self.consent = self.temp / "consent.json"
         self.gemini_config = self.temp / "config.json"
