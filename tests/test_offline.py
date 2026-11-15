@@ -2154,7 +2154,7 @@ class DoctorTests(OfflineBase):
         self.assertEqual(by_name[("permissions", "grants")]["level"], "WARN")
         self.assertIn("agy grants enable", by_name[("permissions", "grants")]["fix"])
 
-    def test_doctor_git_rev_falls_back_to_dash_on_error(self):
+    def test_doctor_git_rev_falls_back_to_version_on_error(self):
         import json
         self.use_rpc({
             "GetAvailableModels": AVAILABLE,
@@ -2165,7 +2165,8 @@ class DoctorTests(OfflineBase):
             code, out, _ = self.run_main("doctor", "--json")
         self.assertEqual(code, 0)
         by_name = {(c["section"], c["name"]): c for c in json.loads(out)["checks"]}
-        self.assertIn("(rev -)", by_name[("runtime", "agy")]["detail"])
+        # Outside a git checkout (a release install) the rev falls back to the version.
+        self.assertIn(f"(rev v{agy.__version__})", by_name[("runtime", "agy")]["detail"])
 
     def test_doctor_extensions_error_mcp_warns_and_secrets_never_leak(self):
         import json

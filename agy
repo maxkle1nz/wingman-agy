@@ -93,6 +93,8 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+__version__ = "0.1.1"
+
 AGY_HOME = Path(os.environ.get("AGY_BRIDGE_HOME") or (Path.home() / ".gemini" / "antigravity")).expanduser()
 _INIT_AGY_HOME = AGY_HOME
 AGENTAPI = AGY_HOME / "bin" / "agentapi"
@@ -3326,7 +3328,8 @@ def _agy_git_rev() -> str:
             return r.stdout.strip()
     except (OSError, subprocess.SubprocessError):
         pass
-    return "-"
+    # Installed from a release (Homebrew, tarball): no git checkout, so name the version.
+    return f"v{__version__}"
 
 
 def _probe_daemon_optional():
@@ -5658,8 +5661,8 @@ def main():
     p = argparse.ArgumentParser(
         prog="agy",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="Bridge between local agents and Google Gemini: the Antigravity daemon "
-                    "(autonomous agents) and the Gemini API (inference).",
+        description="A command-line bridge to Google Antigravity (autonomous agents on your "
+                    "plan) and the Gemini API (one-shot inference).",
         epilog=(
             "exit codes:\n"
             f"  {EXIT_OK}  ok\n"
@@ -5669,6 +5672,7 @@ def main():
             f"  {EXIT_MODEL_MISMATCH}  model mismatch (dispatched, but ran a different model)\n"
             f"  {EXIT_UNVERIFIED}  dispatched, but the model that ran could not be verified"
         ))
+    p.add_argument("--version", action="version", version=f"agy {__version__}")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     sub.add_parser("status", help="daemon health, proven gRPC port, m1nd bridge")
