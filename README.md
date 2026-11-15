@@ -30,6 +30,10 @@ agy ask "Summarize this diff in two lines" < change.diff
 agy img "isometric pixel-art workshop, warm light" -o shop.png
 ```
 
+<p align="center">
+  <img src=".github/assets/demo.gif" alt="agy in a terminal: the model catalog with quota, a one-shot Gemini API answer, a Gemini 4 Hydrogen agent dispatched with model verification, and the agent's reply" width="100%">
+</p>
+
 It is one Python file (3.9+, standard library only) plus a small plugin for Antigravity.
 
 ## What you get
