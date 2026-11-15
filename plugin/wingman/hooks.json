@@ -1,0 +1,30 @@
+{
+  "wingman": {
+    "PreToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hook.sh PreToolUse",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "./hook.sh Stop",
+        "timeout": 5
+      }
+    ],
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "./hook.sh PreInvocation",
+        "timeout": 5
+      }
+    ]
+  }
+}

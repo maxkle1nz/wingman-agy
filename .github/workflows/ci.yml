@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  offline-tests:
+    name: offline tests (Python ${{ matrix.python }})
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.9", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Syntax check
+        run: |
+          python -m py_compile agy plugin/wingman/hook.py
+          sh -n install.sh install-codex.sh plugin/wingman/hook.sh tests/smoke.sh
+      - name: Offline test suite (no network, no Antigravity, no Keychain)
+        run: python tests/test_offline.py
